@@ -15,21 +15,44 @@ import { useToast } from "@/components/ui/use-toast"
 import { CartItemsEmpty } from "@/components/cart-items-empty"
 
 export function CartItems() {
-  function removeCartItem() {}
+  const { cartDetails, removeItem, setItemQuantity } = useShoppingCart();
+  const { toast } = useToast();
+
+
+
+  const cartitems = Object.entries(cartDetails!).map(([_, product]) => product);
+  const skutest = Object.entries(cartDetails!).map(([_, product]) => console.log("here are product has some ", product));
+
+  //  console.log("the cart details is " , cartDetails)
+
+
+
+  if (cartitems.length === 0) return <CartItemsEmpty />
+
+
+  function removeCartItem(product: Product) {
+    removeItem(product.id)
+    toast({
+      title: `${product.name} removed from cart`,
+      description: "Product removed from cart successfully",
+      variant: "destructive",
+
+    })
+  }
 
   return (
     <ul
       role="list"
       className="divide-y divide-gray-200 border-y border-gray-200 dark:divide-gray-500 dark:border-gray-500"
     >
-      {[].map((product, productIdx) => (
-        <li key={"key"} className="flex py-6 sm:py-10">
+      {cartitems.map((product, productIdx) => (
+        <li key={product.id} className="flex py-6 sm:py-10">
           <div className="shrink-0">
             <Image
-              src={"src"}
+              src={product.image!}
               alt={"alt"}
-              width={0}
-              height={0}
+              width={225}
+              height={280}
               className="h-24 w-24 rounded-md border-2 border-gray-200 object-cover object-center dark:border-gray-800 sm:h-48 sm:w-48"
             />
           </div>
@@ -39,32 +62,39 @@ export function CartItems() {
               <div>
                 <div className="flex justify-between">
                   <h3 className="text-sm">
-                    <Link href={`/products/slug`} className="font-medium">
-                      Name
+                    <Link href={`/products/${product?.sku}`} className="font-medium">
+                      {product.name}
                     </Link>
                   </h3>
                 </div>
-                <p className="mt-1 text-sm font-medium">Price</p>
+                <p className="mt-1 text-sm font-medium">{formatCurrencyString({ value: product.price, currency: product.currency })}</p>
                 <p className="mt-1 text-sm font-medium">
                   Size: {/* @ts-ignore */}
-                  <strong>Size</strong>
+                  <strong>{getSizeName(product.product_data?.size)}</strong>
+                  {/* <strong>{product.product_data?.slug}</strong> */}
                 </p>
               </div>
 
               <div className="mt-4 sm:mt-0 sm:pr-9">
                 <label htmlFor={`quantity-${productIdx}`} className="sr-only">
-                  Quantity, Name
+                  Quantity, {product.name}
                 </label>
                 <Input
                   id={`quantity-${productIdx}`}
                   name={`quantity-${productIdx}`}
                   type="number"
                   className="w-16"
+                  min={1}
+                  max={10}
+                  value={product.quantity}
+                  onChange={(e) => setItemQuantity(product.id, Number(e.target.value))}
                 />
                 <div className="absolute right-0 top-0">
                   <Button
                     variant="ghost"
                     type="button"
+                    onClick={() => removeCartItem(product)
+                    }
                     className="-mr-2 inline-flex p-2"
                   >
                     <span className="sr-only">Remove</span>
@@ -84,3 +114,7 @@ export function CartItems() {
     </ul>
   )
 }
+function objecetEntries(cartDetails: import("use-shopping-cart/core").CartDetails | undefined): any {
+  throw new Error("Function not implemented.")
+}
+

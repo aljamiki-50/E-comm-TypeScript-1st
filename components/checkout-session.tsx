@@ -5,10 +5,47 @@ import { CheckCheck, XCircle } from "lucide-react"
 import Stripe from "stripe"
 import { useShoppingCart } from "use-shopping-cart"
 
-interface Props {}
+// We can send an Email to the customer by going to out stripe dashboard and enable at the /emails send a receipe back
+// https://dashboard.stripe.com/settings/emails for The successfull payment
 
-export function CheckoutSession() {
-  if (false) {
+interface Props {
+  sessionParams: {
+    customer_details: Stripe.Checkout.Session.CustomerDetails | null
+    //  {
+    //   email: string
+    //   name: string
+    //   phone: string
+    //   shipping: {
+    //     address: {
+    //       city: string
+    //       country: string
+    //       line1: string
+    //       line2: string
+    //       postal_code: string
+    //       state: string
+    //     }
+    //   }
+    // }
+
+
+
+  }
+}
+
+export function CheckoutSession({ CustomerDetails }: any) {
+
+  const { clearCart } = useShoppingCart()
+  useEffect(() => {
+    if (CustomerDetails) {
+      clearCart()
+      // console.log("the customerDetails session is ", CustomerDetails)
+    }
+
+  }, [CustomerDetails]);
+
+
+
+  if (!CustomerDetails) {
     return (
       <>
         <XCircle className="mx-auto h-10 w-10 text-red-400" />
@@ -26,11 +63,11 @@ export function CheckoutSession() {
         Order Successful!
       </h1>
       <h3 className="mt-8 text-2xl leading-7">
-        Thank you, <span className="font-extrabold">Name</span>!
+        Thank you, <span className="font-extrabold">{CustomerDetails.name}</span>!
       </h3>
       <p className="mt-8">
         Check your purchase email{" "}
-        <span className="mx-1 font-extrabold text-indigo-500">Email</span> for
+        <span className="mx-1 font-extrabold text-indigo-500">{CustomerDetails.email}</span> for
         your invoice.
       </p>
     </>

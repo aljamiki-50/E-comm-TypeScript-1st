@@ -15,7 +15,6 @@ import { seedSanityData } from "@/lib/seed"
 interface Props {
   filter?: any
   searchParams: {
-    toLowerCase(): any;
     price: string
     date: string
     category: string
@@ -34,6 +33,9 @@ async function GetProducts(Price: any) {
   // console.log(" oh really ", Price)
 
   const result = await fetch("http://localhost:4000/products")
+  // create an await resole as we fetching from our local api here so we could wait for the data to be fetched
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
   const Products = await result.json()
 
 
@@ -128,7 +130,7 @@ export default async function Page(params: Props) {
   return (
     <div>
       <div className="px-4 pt-20 text-center">
-        <h1 className=" uppercase text-4xl font-extrabold tracking-normal">
+        <h1 className="uppercase text-4xl font-extrabold tracking-normal">
           {siteConfig.name}
         </h1>
         <p className="mx-auto mt-4 max-w-3xl text-base">

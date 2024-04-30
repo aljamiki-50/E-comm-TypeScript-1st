@@ -19,21 +19,21 @@ interface Props {
 
 export function ProductInfo({ product }: Props) {
   const [selectedsize, setSelectedsize] = useState(product.sizes[0])
+  const [sku, setSku] = useState("")
   const { addItem, cartDetails, incrementItem } = useShoppingCart()
   const isInCart = !!cartDetails?.[product._id]
   const { toast } = useToast()
 
-  console.log("here the cart how much we got around ", isInCart)
   function addToCart(e: any) {
-    e.preventDefault()
     const item = {
       ...product,
       product_data: {
         size: selectedsize,
-
+        slug: sku,
       },
-
     }
+
+    //  console.log("the item been added to cart is: ", item);
 
     isInCart ? incrementItem(item?._id) : addItem(item)
     toast({
@@ -44,14 +44,10 @@ export function ProductInfo({ product }: Props) {
           <Button variant={"link"} className=" gap-x-2 whitespace-nowrap">
             <span>open Cart</span>
             <ArrowRight className="h-5 w-5 text-gray-500" />
-
-
           </Button>
         </Link>
-      )
-      // duration: 5000,
+      ),
     })
-    // console.log("your items is  ", item)
   }
 
   return (
@@ -60,7 +56,12 @@ export function ProductInfo({ product }: Props) {
 
       <div className="mt-3">
         <h2 className="sr-only">{product.description}</h2>
-        <p className="text-3xl tracking-tight">{formatCurrencyString({ value: product.price, currency: product.currency })}</p>
+        <p className="text-3xl tracking-tight">
+          {formatCurrencyString({
+            value: product.price,
+            currency: product.currency,
+          })}
+        </p>
       </div>
 
       <div className="mt-6">
@@ -69,11 +70,17 @@ export function ProductInfo({ product }: Props) {
       </div>
 
       <div className="mt-4">
+        {/* <p>{product.sku}</p> */}
         <p>
           Size: <strong>{getSizeName(selectedsize)}</strong>
         </p>
         {product.sizes.map((size) => (
-          <Button onClick={() => setSelectedsize(size)} key={size} variant={selectedsize === size ? "default" : "outline"} className="mr-2 mt-4">
+          <Button
+            onClick={() => setSelectedsize(size)}
+            key={size}
+            variant={selectedsize === size ? "default" : "outline"}
+            className="mr-2 mt-4"
+          >
             {getSizeName(size)}
           </Button>
         ))}
@@ -82,7 +89,11 @@ export function ProductInfo({ product }: Props) {
       <form className="mt-6">
         <div className="mt-4 flex">
           <Button
-            onClick={addToCart}
+            onClick={(e) => {
+              setSku(product.sku)
+              console.log("the sku is  ", sku)
+              addToCart(e)
+            }}
             type="button"
             className="w-full bg-violet-600 py-6 text-base font-medium text-white hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500"
           >
