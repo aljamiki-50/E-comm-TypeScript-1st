@@ -38,10 +38,10 @@ export function CheckoutSession({ CustomerDetails }: any) {
   useEffect(() => {
     if (CustomerDetails) {
       clearCart()
-      // console.log("the customerDetails session is ", CustomerDetails)
+
     }
 
-  }, [CustomerDetails]);
+  }, [CustomerDetails, clearCart]);
 
 
 

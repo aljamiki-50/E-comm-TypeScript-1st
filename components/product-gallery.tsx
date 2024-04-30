@@ -1,7 +1,9 @@
+// **Client-side component**
 "use client"
+
 import { useState } from "react"
 import Image from "next/image"
-import { urlForImage } from "@/sanity/lib/image"
+import { urlForImage } from "@/sanity/lib/image" // **Custom Sanity image library**
 
 import { SanityProduct } from "@/config/inventory"
 import { shimmer, toBase64 } from "@/lib/image"

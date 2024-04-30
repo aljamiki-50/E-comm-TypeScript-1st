@@ -18,27 +18,33 @@ interface Props {
     price: string
     date: string
     category: string
-    color: string[]
+    color: string[] | string
     size: string
     search?: string
   }
-
-
-  products: SanityProduct[]
+  products: any[]
+}
+interface Product {
+  id: string;
+  sku: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  images: string[];
+  sizes: string[];
+  categories: string[];
+  colors: string[];
+  currency: string;
 }
 
 
 
-async function GetProducts(Price: any) {
-  // console.log(" oh really ", Price)
-
+async function GetProducts(Price: any): Promise<any[]> {
   const result = await fetch("http://localhost:4000/products")
-  // create an await resole as we fetching from our local api here so we could wait for the data to be fetched
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  await new Promise((resolve) => setTimeout(resolve, 3000))
 
-  const Products = await result.json()
-
-
+  const Products: Product[] = await result.json()
 
   const sortedProducts = Products.sort((a: any, b: any) => {
     if (Price === "asc") {
@@ -51,11 +57,10 @@ async function GetProducts(Price: any) {
   })
 
   return sortedProducts
-
 }
 
 
-export default async function Page(params: Props) {
+export default async function Home(params: Props): Promise<JSX.Element> {
   const { search = "", price = "", date = "desc", category = "", color = "", size = "" } = params.searchParams
 
   // console.log("oh really ", size)
@@ -104,28 +109,6 @@ export default async function Page(params: Props) {
     }
   });
 
-  // console.log("her is the ",sorted)
-  // console.log("her is the products ",products)
-
-
-
-
-
-
-
-
-
-
-  // const one = products.find((product: any) => product.categories == `${category}`)
-
-  // console.log("here the one been chooosed ", one)
-  // console.log(category)
-
-
-  // console.log(Products)
-
-
-
 
   return (
     <div>
@@ -151,12 +134,8 @@ export default async function Page(params: Props) {
               Products
             </h2>
             <div
-              className={cn(
-                "grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4",
-                products?.length === 0
-                  ? "lg:grid-cols-4"
-                  : "lg:grid-cols-[1fr_3fr]"
-              )}
+              className={`${products?.length === 0 ? "lg:grid-cols-4" : "lg:grid-cols-[1fr_3fr]"}  grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4`}
+
             >
               <div className="hidden lg:block">
                 <ProductFilters />
@@ -169,7 +148,7 @@ export default async function Page(params: Props) {
           </section>
         </main>
       </div>
-    </div>
+    </div >
   )
 }
 function elseif(arg0: boolean) {
