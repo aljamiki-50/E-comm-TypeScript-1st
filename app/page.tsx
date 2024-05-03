@@ -4,9 +4,21 @@ import { ProductGrid } from "@/components/product-grid"
 // import { GetProducts } from "@/lib/api"
 import { ProductSort } from "@/components/product-sort"
 
+// interface props {
+//   filter?: any
+//   slug?: string;
+//   searchParams: {
+//     price: string
+//     date: string
+//     category: string
+//     color: string[] | string
+//     size: string
+//     search?: string
+//   }
+//   products: any[]
+// }
+
 interface props {
-  filter?: any
-  slug?: string;
   searchParams: {
     price: string
     date: string
@@ -15,7 +27,6 @@ interface props {
     size: string
     search?: string
   }
-  products: any[]
 }
 
 
@@ -38,7 +49,7 @@ async function GetProducts(Price: any): Promise<any[]> {
 }
 
 
-export default async function Home({ searchParams }: props): Promise<JSX.Element> {
+async function Home({ searchParams }: props): Promise<JSX.Element> {
   const { search = "", price = "", date = "desc", category = "", color = "", size = "" } = searchParams
 
   const Price = price ? price : date ? date : " "
@@ -114,3 +125,4 @@ export default async function Home({ searchParams }: props): Promise<JSX.Element
     </div >
   )
 }
+export default Home;

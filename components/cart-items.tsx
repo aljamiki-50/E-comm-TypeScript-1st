@@ -2,7 +2,6 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { urlForImage } from "@/sanity/lib/image"
 import { Clock, X } from "lucide-react"
 import { formatCurrencyString, useShoppingCart } from "use-shopping-cart"
 import { Product } from "use-shopping-cart/core"

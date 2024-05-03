@@ -19,7 +19,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { ProductFilters } from "@/components/product-filters"
-import { route } from "sanity/router"
 import { Router } from "next/router"
 
 const sortOptions = [

@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     //  requesting the origin headers to have a redirect in case of success or failure submission 
     const origin = request.headers.get('origin')
 
-    console.log(origin)
+    // console.log(origin)
 
     const cartdetails = await request.json()
 
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     // console.log("hey how is the way", session)
 
 
-    return  NextResponse.json(session)
+    return NextResponse.json(session)
 
 }
 
