@@ -1,19 +1,12 @@
-import { client } from "@/sanity/lib/client"
-import { groq } from "next-sanity"
-// import styled from 'styled-components';
-import { retry } from 'get-it/middleware';
-
-
-import { SanityProduct } from "@/config/inventory"
 import { siteConfig } from "@/config/site"
-import { cn } from "@/lib/utils"
 import { ProductFilters } from "@/components/product-filters"
 import { ProductGrid } from "@/components/product-grid"
+// import { GetProducts } from "@/lib/api"
 import { ProductSort } from "@/components/product-sort"
-import { seedSanityData } from "@/lib/seed"
 
-interface Props {
+interface props {
   filter?: any
+  slug?: string;
   searchParams: {
     price: string
     date: string
@@ -24,64 +17,38 @@ interface Props {
   }
   products: any[]
 }
-interface Product {
-  id: string;
-  sku: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  images: string[];
-  sizes: string[];
-  categories: string[];
-  colors: string[];
-  currency: string;
-}
-
 
 
 async function GetProducts(Price: any): Promise<any[]> {
-  const result = await fetch("http://localhost:4000/products")
-  await new Promise((resolve) => setTimeout(resolve, 3000))
-
-  const Products: Product[] = await result.json()
+  const result = await fetch("http://localhost:4000/products");
+  await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulating a delay for demonstration purposes
+  const Products = await result.json();
 
   const sortedProducts = Products.sort((a: any, b: any) => {
     if (Price === "asc") {
-      return a.price - b.price
+      return a.price - b.price;
     } else if (Price === "desc") {
-      return b.price - a.price
+      return b.price - a.price;
     } else {
-      return 0
+      return 0;
     }
-  })
+  });
 
-  return sortedProducts
+  return sortedProducts;
 }
 
 
-export default async function Home(params: Props): Promise<JSX.Element> {
-  const { search = "", price = "", date = "desc", category = "", color = "", size = "" } = params.searchParams
-
-  // console.log("oh really ", size)
-
-
-
-
+export default async function Home({ searchParams }: props): Promise<JSX.Element> {
+  const { search = "", price = "", date = "desc", category = "", color = "", size = "" } = searchParams
 
   const Price = price ? price : date ? date : " "
 
-  const products = await GetProducts(`${Price}`)
-
-
+  const products = await GetProducts(Price)
 
   const sorted = products.filter((product: any) => {
-
-
     if (search) {
       if (color) {
         return product.name.toLowerCase().includes(search.toLowerCase()) && product.colors == `${color}`
-
       }
       return (
         product.name.toLowerCase().includes(search.toLowerCase()) || product.name.toLowerCase() == `${search.toLowerCase()}` ||
@@ -89,10 +56,7 @@ export default async function Home(params: Props): Promise<JSX.Element> {
         product.categories.includes(search.toLowerCase()) || product.categories == `${search.toLowerCase()}` ||
         product.colors.includes(search.toLowerCase())
       );
-
-
     }
-
 
     if (category) {
       return product.categories == `${category}`
@@ -108,7 +72,6 @@ export default async function Home(params: Props): Promise<JSX.Element> {
       return true;
     }
   });
-
 
   return (
     <div>
@@ -126,6 +89,7 @@ export default async function Home(params: Props): Promise<JSX.Element> {
             <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
               {products.length} product {products.length === 1 ? "" : "s"}
             </h1>
+            {/* You need to implement ProductSort component */}
             <ProductSort />
           </div>
 
@@ -135,14 +99,13 @@ export default async function Home(params: Props): Promise<JSX.Element> {
             </h2>
             <div
               className={`${products?.length === 0 ? "lg:grid-cols-4" : "lg:grid-cols-[1fr_3fr]"}  grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4`}
-
             >
               <div className="hidden lg:block">
+                {/* You need to implement ProductFilters component */}
                 <ProductFilters />
               </div>
               <div className="">
                 < ProductGrid products={sorted} />
-
               </div>
             </div>
           </section>
@@ -151,7 +114,3 @@ export default async function Home(params: Props): Promise<JSX.Element> {
     </div >
   )
 }
-function elseif(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}
-

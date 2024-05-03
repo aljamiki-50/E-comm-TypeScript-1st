@@ -10,7 +10,19 @@ import { SanityProduct } from "@/config/inventory"
 import { shimmer, toBase64 } from "@/lib/image"
 
 interface Props {
-  products: SanityProduct[]
+  products: {
+    id: string;
+    sku: string;
+    name: string;
+    description: string;
+    price: number;
+    image: string;
+    images: string[];
+    sizes: string[];
+    categories: string[];
+    colors: string[];
+    currency: string;
+  }[];
 }
 interface InventoryProduct {
   id: string
@@ -29,7 +41,7 @@ interface InventoryProduct {
 }
 
 export function ProductGrid({ products }: Props) {
-//  console.log("here the product we lookging for", products)
+  console.log("here the product we lookging for", products)
   if (products.length === 0) {
     return (
       <div className="mx-auto grid h-40 w-full place-items-center rounded-md border-2 border-dashed bg-gray-50 py-10 text-center dark:bg-gray-900">

@@ -1,37 +1,32 @@
-import { client } from "@/sanity/lib/client"
-import { groq } from "next-sanity"
+
 
 import { SanityProduct } from "@/config/inventory"
 import { ProductGallery } from "@/components/product-gallery"
 import { ProductInfo } from "@/components/product-info"
+import { Params } from "next/dist/shared/lib/router/utils/route-matcher"
 
 interface Props {
   params: {
-    slug: string
-    sku: string
+    slug?: string
+    sku?: string
   }
 
 }
-async function GetCertainProduct(slug: string) {
-
-  const results = await fetch(("http://localhost:4000/products"))
-  const data = await results.json()
-  const product = data.find((product: { sku: string }) => product.sku === `${slug}`)
-  // console.log("the product data finally ", product)
-
-
-  return product
-
-
-
+async function GetCertainProduct(slug: string): Promise<any> {
+  const results = await fetch("http://localhost:4000/products");
+  const data = await results.json();
+  const product = data.find((product: { sku: string }) => product.sku === slug);
+  return product;
 }
 
-export default async function Page({ params }: Props) {
+
+async function Page({ params }: { params: { slug: string } }) {
   const { slug } = params
 
+  // console.log("the slug", slug)
   // yet not sure whichy of methods The corrected but i  do use them both yet
 
-  const product = await GetCertainProduct(`${slug}`)
+  const product = await GetCertainProduct(slug)
 
   // const certain = Products.find((product: { sku: string }) => product.sku === slug)
   // console.log("here the all products", certain)
@@ -48,3 +43,5 @@ export default async function Page({ params }: Props) {
     </main>
   )
 }
+
+export default Page; 
