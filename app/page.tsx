@@ -34,12 +34,12 @@ interface props {
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
 
+
 async function GetProducts(Price: any): Promise<any[]> {
   await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulating a delay for demonstration purposes
   const result = await fetch(`${API_URL}/products`);
   const Products = await result.json();
 
-  console.log("here the all products", Products)
 
   const sortedProducts = Products.sort((a: any, b: any) => {
     if (Price === "asc") {
@@ -89,6 +89,8 @@ async function Home({ searchParams }: props): Promise<JSX.Element> {
       return true;
     }
   });
+
+   console.log("the sorted products", sorted)
 
   return (
     <div>
