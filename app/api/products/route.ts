@@ -81,6 +81,7 @@
 //         });
 //     }
 // }
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://e-comm-type-script-1st-n72y8zc8p-works-projects-efd052ef.vercel.app';
 
 import type { NextRequest } from 'next/server';
 
@@ -91,7 +92,7 @@ type ResponseData = {
 
 export async function GET(request: NextRequest): Promise<Response> {
     try {
-        const result = await fetch('http://localhost:4000/products');
+        const result = await fetch(`${API_URL}/api/products`);
         if (!result.ok) {
             throw new Error('Failed to fetch products');
         }

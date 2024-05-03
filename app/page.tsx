@@ -31,8 +31,7 @@ interface props {
 }
 
 
-const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : process.env.NEXT_PUBLIC_API_URL;
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://e-comm-type-script-1st-n72y8zc8p-works-projects-efd052ef.vercel.app';
 
 async function GetProducts(Price: any): Promise<any[]> {
   console.log("the API URL is: ", API_URL)
