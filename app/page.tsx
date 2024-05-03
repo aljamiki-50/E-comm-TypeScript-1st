@@ -35,6 +35,8 @@ async function GetProducts(Price: any): Promise<any[]> {
   await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulating a delay for demonstration purposes
   const Products = await result.json();
 
+  console.log("here the all products", Products)
+
   const sortedProducts = Products.sort((a: any, b: any) => {
     if (Price === "asc") {
       return a.price - b.price;
