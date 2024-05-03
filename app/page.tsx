@@ -31,13 +31,14 @@ interface props {
 }
 
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = 'http://localhost:4000' || process.env.NEXT_PUBLIC_API_URL;
 
-
-console.log("the API URL is: ", API_URL)
 
 
 async function GetProducts(Price: any): Promise<any[]> {
+  console.log("the API URL is: ", API_URL)
+
+
   await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulating a delay for demonstration purposes
   const result = await fetch(`${API_URL}/products`);
   await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulating a delay for demonstration purposes
