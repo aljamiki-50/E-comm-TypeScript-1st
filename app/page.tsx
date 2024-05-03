@@ -3,6 +3,7 @@ import { ProductFilters } from "@/components/product-filters"
 import { ProductGrid } from "@/components/product-grid"
 // import { GetProducts } from "@/lib/api"
 import { ProductSort } from "@/components/product-sort"
+import { use } from "react"
 
 // interface props {
 //   filter?: any
@@ -30,9 +31,12 @@ interface props {
 }
 
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
+
 async function GetProducts(Price: any): Promise<any[]> {
-  const result = await fetch("http://localhost:4000/products");
   await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulating a delay for demonstration purposes
+  const result = await fetch(`${API_URL}/products`);
   const Products = await result.json();
 
   console.log("here the all products", Products)
