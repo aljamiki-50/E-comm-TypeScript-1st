@@ -31,13 +31,17 @@ interface props {
 }
 
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || process.env.NEXTAUTH_URL;
 
+
+console.log("the API URL is: ", API_URL)
 
 
 async function GetProducts(Price: any): Promise<any[]> {
   await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulating a delay for demonstration purposes
   const result = await fetch(`${API_URL}/products`);
+  await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulating a delay for demonstration purposes
+
   const Products = await result.json();
 
 
@@ -51,8 +55,12 @@ async function GetProducts(Price: any): Promise<any[]> {
     }
   });
 
+
+
   return sortedProducts;
 }
+
+
 
 
 async function Home({ searchParams }: props): Promise<JSX.Element> {
@@ -90,7 +98,8 @@ async function Home({ searchParams }: props): Promise<JSX.Element> {
     }
   });
 
-   console.log("the sorted products", sorted)
+  // console.log("the sorted products", sorted)
+
 
   return (
     <div>
